@@ -35,7 +35,7 @@ class TestValidation:
     @patch("app.core.service.get_weather")
     def test_extra_params_are_ignored(self, mock_service):
         """Parametros extras sao ignorados quando ha params validos."""
-        mock_service.return_value = MOCK_COMPLETE
+        mock_service.return_value = MOCK_RESPONSE
         response = client.get("/weather?city=London&bb=AAA&foo=123")
         assert response.status_code == 200
 

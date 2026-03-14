@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+import app.config 
 from app.api.routes import router
 from app.middleware import ConfigMiddleware
 
