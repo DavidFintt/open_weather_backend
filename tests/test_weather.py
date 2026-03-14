@@ -53,39 +53,45 @@ class TestValidation:
 class TestPriority:
     """Testes de priorizacao lat/lon vs cidade."""
 
-    @patch("app.core.service.get_weather")
-    def test_coords_take_priority_over_city(self, mock_service):
+    @patch("app.adapters.gist_client.update")
+    @patch("app.adapters.weather_client.fetch")
+    def test_coords_take_priority_over_city(self, mock_weather, mock_gist):
         """Quando city e lat/lon sao informados, usa lat/lon."""
-        mock_service.return_value = MOCK_COMPLETE
+        mock_weather.return_value = MOCK_COMPLETE
+        mock_gist.return_value = "Gist publicado com sucesso !"
         response = client.get(
             "/weather?city=London&lat=-23.55&lon=-46.63"
         )
         assert response.status_code == 200
-        mock_service.assert_called_once()
-        kwargs = mock_service.call_args[1]
+        mock_weather.assert_called_once()
+        kwargs = mock_weather.call_args[1]
         assert kwargs.get("lat") == -23.55
         assert kwargs.get("lon") == -46.63
         assert "city" not in kwargs
 
-    @patch("app.core.service.get_weather")
-    def test_invalid_coords_with_city_falls_back(self, mock_service):
+    @patch("app.adapters.gist_client.update")
+    @patch("app.adapters.weather_client.fetch")
+    def test_invalid_coords_with_city_falls_back(self, mock_weather, mock_gist):
         """lat/lon invalidos com city valida faz fallback pra city."""
-        mock_service.return_value = MOCK_COMPLETE
+        mock_weather.return_value = MOCK_COMPLETE
+        mock_gist.return_value = "Gist publicado com sucesso !"
         response = client.get(
             "/weather?city=London&lat=999&lon=999"
         )
         assert response.status_code == 200
+        kwargs = mock_weather.call_args[1]
+        assert kwargs.get("city") == "London"
 
-    @patch("app.core.service.get_weather")
-    def test_invalid_coords_and_city_returns_error(self, mock_service):
+    @patch("app.adapters.gist_client.update")
+    @patch("app.adapters.weather_client.fetch")
+    def test_invalid_coords_and_city_returns_error(self, mock_weather, mock_gist):
         """lat/lon invalidos e cidade inexistente retorna erro combinado."""
-        mock_service.side_effect = CityNotFoundError()
+        mock_weather.side_effect = CityNotFoundError()
         response = client.get(
             "/weather?city=cidadeinexistente&lat=999&lon=999"
         )
         assert response.status_code in (404, 422)
-        data = response.json()
-        detail = str(data.get("detail", "")).lower()
+        detail = str(response.json().get("detail", "")).lower()
         assert "coordenadas" in detail or "cidade" in detail
 
 
