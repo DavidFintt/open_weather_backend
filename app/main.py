@@ -1,16 +1,8 @@
 from fastapi import FastAPI
 
+from app.api.routes import router
 from app.middleware import ConfigMiddleware
 
 app = FastAPI()
 app.add_middleware(ConfigMiddleware)
-
-
-@app.get("/health")
-def health_check():
-    return {"status": "ok"}
-
-
-@app.get("/weather")
-def get_weather():
-    pass
+app.include_router(router)
