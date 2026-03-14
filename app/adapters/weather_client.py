@@ -1,0 +1,2 @@
+def fetch(**kwargs):
+    pass
