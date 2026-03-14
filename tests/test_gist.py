@@ -59,8 +59,17 @@ class TestGist:
     @patch("app.adapters.gist_client.Github")
     def test_update_with_empty_forecast(self, mock_github_cls):
         """Forecast vazio deve levantar erro."""
+        from app.core.exceptions import EmptyWeatherDataError
         empty = CompleteForecast(current=MOCK_CURRENT, forecast=[])
-        with pytest.raises(ValueError):
+        with pytest.raises(EmptyWeatherDataError):
+            gist_client.update(empty)
+
+    @patch("app.adapters.gist_client.Github")
+    def test_update_with_empty_current(self, mock_github_cls):
+        """Current vazio deve levantar erro."""
+        from app.core.exceptions import EmptyWeatherDataError
+        empty = CompleteForecast(current=None, forecast=MOCK_FORECAST)
+        with pytest.raises(EmptyWeatherDataError):
             gist_client.update(empty)
 
     @patch("app.adapters.gist_client.Github")
@@ -70,7 +79,7 @@ class TestGist:
         mock_github_cls.return_value.get_gist.return_value = mock_gist
         gist_client.update(MOCK_COMPLETE)
         call_args = mock_gist.edit.call_args
-        files = call_args[1].get("files") or call_args[0][1] if call_args[0] else None
+        files = call_args[1]["files"]
         content = str(files)
         assert "Cidade: Londres" in content
         assert "Clima em 13/03: 30°, poucas nuvens." in content
