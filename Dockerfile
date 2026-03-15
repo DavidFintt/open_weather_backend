@@ -12,6 +12,8 @@ COPY app/ app/
 COPY tests/ tests/
 COPY .env.example .env
 
+RUN mkdir -p logs
+
 RUN python -m pytest tests/ -v --tb=short
 
 EXPOSE 8500
