@@ -1,17 +1,7 @@
-from github import Github
+from github import Github, InputFileContent
 
 from app.config import GITHUB_TOKEN, GIST_ID
 from app.core.exceptions import EmptyWeatherDataError
-
-
-class _FileContent:
-    """Wrapper compativel com PyGithub e com __repr__ legivel."""
-
-    def __init__(self, content):
-        self.content = content
-
-    def __repr__(self):
-        return self.content
 
 
 def _format_content(complete_forecast):
@@ -38,5 +28,5 @@ def update(complete_forecast):
     content = _format_content(complete_forecast)
     g = Github(GITHUB_TOKEN)
     gist = g.get_gist(GIST_ID)
-    gist.edit(files={"weather.txt": _FileContent(content)})
+    gist.edit(files={"FinttWeatherMap": InputFileContent(content)})
     return "Gist publicado com sucesso !"
