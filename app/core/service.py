@@ -2,6 +2,9 @@ from dataclasses import asdict
 
 from app.adapters import gist_client, weather_client
 from app.core.exceptions import GistPublishError
+from app.logger import Log
+
+logger = Log.get_logger("openweather")
 
 
 def _coords_valid(lat, lon):
@@ -24,7 +27,8 @@ def get_weather(city=None, lat=None, lon=None):
 
     try:
         gist_status = gist_client.update(data)
-    except Exception:
+    except Exception as e:
+        logger.error("Falha ao publicar gist: %s", e, exc_info=True)
         gist_status = "Erro ao publicar gist"
 
     result = {

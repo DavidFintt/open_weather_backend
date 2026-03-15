@@ -1,0 +1,13 @@
+2026-03-14 18:12:56 ERROR openweather Falha ao publicar gist: GitHub API error
+Traceback (most recent call last):
+  File "D:\projetos\desafioCaiena\SDKOpenWeather\backend_fastapi\app\core\service.py", line 29, in get_weather
+    gist_status = gist_client.update(data)
+  File "C:\Users\David Finotto\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1169, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\David Finotto\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1173, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\David Finotto\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1228, in _execute_mock_call
+    raise effect
+Exception: GitHub API error
