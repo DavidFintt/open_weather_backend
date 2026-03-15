@@ -80,7 +80,7 @@ class TestGist:
         gist_client.update(MOCK_COMPLETE)
         call_args = mock_gist.edit.call_args
         files = call_args[1]["files"]
-        content = str(files)
+        content = files["weather.txt"]._identity["content"]
         assert "Cidade: Londres" in content
         assert "Clima em 13/03: 30°, poucas nuvens." in content
         assert "14/03: 20°" in content
