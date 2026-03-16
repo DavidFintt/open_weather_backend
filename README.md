@@ -95,6 +95,8 @@ Preencha as variaveis:
 | `GITHUB_TOKEN`        | Token de acesso pessoal do GitHub  |
 | `GIST_ID`             | ID do Gist a ser atualizado        |
 
+> **Gist utilizado:** [https://gist.github.com/DavidFintt/713d6ff972be1fc3687b9d18ab4a628c](https://gist.github.com/DavidFintt/713d6ff972be1fc3687b9d18ab4a628c)
+
 O middleware bloqueia todas as requisicoes (exceto `/health`) caso alguma variavel esteja ausente.
 
 ## Execucao com Docker
