@@ -103,8 +103,17 @@ O middleware bloqueia todas as requisicoes (exceto `/health`) caso alguma variav
 # Build (executa os testes automaticamente)
 docker build -t openweather-backend .
 
-# Subir o container
-docker run -d --network host --env-file .env --name openweather-backend openweather-backend
+# Subir o container com um volume para o diretorio logs
+docker run -d --network host --env-file .env -v $(pwd)/logs:/app/logs --name openweather-backend openweather-backend
+
+# Execução de testes via docker
+docker exec openweather-backend python -m pytest
+```
+
+```bash
+# Build (executa os testes automaticamente)
+docker build -t openweather-backend .
+
 ```
 
 A API estara disponivel em `http://localhost:8500`.
